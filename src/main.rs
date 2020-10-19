@@ -1,5 +1,7 @@
 use std::io::{self, Write};
 use std::process::Command;
+use std::path::Path;
+use std::env;
 
 fn main() {
     loop {
@@ -13,11 +15,26 @@ fn main() {
         let command = parts.next().unwrap();
         let args = parts;
 
-        let mut child = Command::new(command)
-            .args(args)
-            .spawn()
-            .unwrap();
+        match command {
+            "cd" => {
+                let new_dir = args.peekable().peek().map_or("/", |x| *x);
+                let root = Path::new(new_dir);
 
-        child.wait().unwrap();
+                if let Err(e) = env::set_current_dir(&root) {
+                    eprintln!("{}", e);
+                }
+            },
+            "exit" => return,
+            command => {
+                let child = Command::new(command)
+                    .args(args)
+                    .spawn();
+
+                match child {
+                    Ok(mut child) => { child.wait().unwrap(); },
+                    Err(e) => eprintln!("{}", e),
+                }
+            }
+        }
     }
 }
