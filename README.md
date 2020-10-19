@@ -6,3 +6,5 @@ Yet another [ru]st [sh]ell.
 - piping
 - redirection
 - globs
+- history
+- file completion
