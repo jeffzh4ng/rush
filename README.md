@@ -1,10 +1,9 @@
 # rush
 Yet another [ru]st [sh]ell.
 
-## Future Plans
-- real parsing
-- piping
-- redirection
-- globs
-- history
-- file completion
+## Features
+- [x] history
+- [ ] real parsing
+- [ ] pipes, redirection
+- [ ] globbing
+- [ ] file completion
