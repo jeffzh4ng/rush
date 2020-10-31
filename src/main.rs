@@ -4,16 +4,21 @@ use std::path::Path;
 use std::env;
 
 fn main() {
+    let mut history: Vec<String> = Vec::new();
+    
     loop {
         print!("> ");
         // need to explicitly flush this to ensure it prints before read_line
         io::stdout().flush().unwrap();
         
+        // parsing
         let mut input = String::new();
         io::stdin().read_line(&mut input).unwrap();
         let mut parts = input.trim().split_whitespace();
         let command = parts.next().unwrap();
         let args = parts;
+
+        history.push(command.to_string());
 
         match command {
             "cd" => {
@@ -22,6 +27,11 @@ fn main() {
 
                 if let Err(e) = env::set_current_dir(&root) {
                     eprintln!("{}", e);
+                }
+            },
+            "history" => {
+                for (i, command) in history.iter().enumerate() {
+                    println!("{} {}", i, command);
                 }
             },
             "exit" => return,
